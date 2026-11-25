@@ -1,0 +1,18 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "regions": ["fra1"],
+  "functions": {
+    "api/index.php": {
+      "runtime": "vercel-php@0.9.0",
+      "maxDuration": 10
+    }
+  },
+  "routes": [
+    {
+      "src": "/vues/public/(.+\\.(?:css|js|png|jpg|jpeg|svg|webp|ico))",
+      "headers": { "Cache-Control": "public, max-age=3600" },
+      "dest": "/vues/public/$1"
+    },
+    { "src": "/(.*)", "dest": "/api/index.php" }
+  ]
+}

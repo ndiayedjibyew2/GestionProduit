@@ -1,0 +1,36 @@
+-- Schéma MySQL / MariaDB (XAMPP)
+CREATE TABLE IF NOT EXISTS categories (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nom VARCHAR(100) NOT NULL,
+  description TEXT NULL,
+  date_creation TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS produits (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  nom VARCHAR(150) NOT NULL,
+  description TEXT NULL,
+  prix DECIMAL(10,2) NOT NULL,
+  quantite INT NOT NULL DEFAULT 0,
+  categorie_id INT NULL,
+  date_creation TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  date_modification TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  KEY categorie_id (categorie_id),
+  CONSTRAINT produits_ibfk_1 FOREIGN KEY (categorie_id) REFERENCES categories (id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE IF NOT EXISTS utilisateur (
+  id INT AUTO_INCREMENT PRIMARY KEY,
+  email VARCHAR(150) NOT NULL UNIQUE,
+  password VARCHAR(255) NOT NULL,
+  nom VARCHAR(100) NOT NULL,
+  role ENUM('admin','utilisateur') DEFAULT 'utilisateur',
+  date_creation TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+-- Optionnel en local (utilisé seulement si la variable SESSION_BDD est définie)
+CREATE TABLE IF NOT EXISTS sessions (
+  id VARCHAR(128) PRIMARY KEY,
+  data TEXT NOT NULL,
+  derniere_activite INT NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
